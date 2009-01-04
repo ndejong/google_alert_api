@@ -1,0 +1,72 @@
+#!/usr/bin/php
+<?php
+/* ===========================================================================
+  $Id: GoogleAlertApi.php 25 2009-01-12 05:28:45Z ndejong $
+
+  GoogleAlertApi - a PHP class implemting an API to Google Alerts
+  Copyright (C) 2009 Nicholas de Jong
+  =========================================================================== */
+
+// GoogleAlertApi( string[username], string[password], string[cookiefile], string[useragent] )
+//   The only required input parameters for this class are the google account username and password.  Reasonable defaults are chosen for
+//   all other parameters, which can be adjusted if needed.
+//   
+//   username   = [required] google account username
+//   password   = [required] corrosponding google account password
+//   cookiefile = location of an alternate cookie file to be used.  The cookie file manages and maintains the logged in session state.  You must manage this file if you plan on using more than one google account !!
+//   useragent  = adjust the user agent presented if you feel the need.
+// 
+//   Example class instantiation
+//     $gapi = new GoogleAlertApiClass('GOOGLE_USERNAME','GOOGLE_PASSWORD');
+//     $gapi = new GoogleAlertApiClass('GOOGLE_USERNAME','GOOGLE_PASSWORD',null,null);
+//
+//   Functions available
+//     alertList() -- Can be caled once a GoogleAlertApiClass has been created.  Returns an array of alert terms and their respective RSS feed URLs.
+//     alertAdd(string[TERM]) -- adds a new google alert.  Returns 1 of sucess or 0 on failure.
+//     alertRemove(string[TERM]) -- removes a google alert term. Returns 1 of sucess or 0 on failure.
+//     alertEdit(string[OLD_TERM], string[NEW_TERM]) -- shortcut function, simply calls alertRemove and alertAdd on their respective terms. Returns 1.
+
+
+// Define the logging setup
+// ===========================================================================
+//  0 emerg   	= System is unusable
+//  1 alert   	= Immediate action required
+//  2 crit   	= Critical conditions
+//  3 err     	= Error conditions
+//  4 warning 	= Warning conditions
+//  5 notice  	= Normal but significant
+//  6 info    	= Informational
+//  7 debug   	= Debug-level messages
+//    all  		= All messages
+//    none 		= No messages
+
+include_once('Log.php');
+define('LOG_LEVEL_DISPLAY','7');
+define('LOG_CONF_DISPLAY',serialize(array('error_prepend' => '','error_append'  => '')));
+
+include_once("GoogleAlertApi.php");
+$gapi = new GoogleAlertApi('ga000001@onthepeople.net','4c0d509886ef1a39940c6c2afc02258c');
+
+// Add an alert
+//$gapi->alertAdd("hello world");
+
+// Get the current alert list
+print_r($gapi->alertList());
+
+// Edit an alert
+//$gapi->alertEdit("hello world","new alert");
+
+// Remove an alert
+$gapi->alertRemove("hello world");
+
+// Remove all alerts from an account
+//$gapi->alertPurgeAll();
+
+// Get the current alert list
+//print_r($gapi->alertList());
+
+// Get log output
+// $gapi->log(); 	// as an array
+// $gapi->log(TRUE); 	// as a string
+
+
